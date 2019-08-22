@@ -1,17 +1,15 @@
-const styles = () => ({
-  titleStatus: {
-    margin: "30px 0",
+const styles = (theme) => ({
+  modal: {
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #e1e1e1',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 4),
   },
-  card: {
-    padding: 20,
-    marginBottom: 20
-  },
-  text: {
-    margin: '10px 0'
-  },
-  fab: {
-    marginLeft: 10
-  }
 });
 
 export default styles;

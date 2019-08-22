@@ -15,6 +15,7 @@ const reducer = (state = initialState, action) => {
     }
     case taskConstants.FETCH_TASK_SUCCESS: {
       const { data } = action.payload;
+      console.log(data);
       return {
         ...state,
         listTask: data
@@ -26,6 +27,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         listTask: []
+      };
+    }
+    case taskConstants.FILTER_TASK_SUCCESS: {
+      const { data } = action.payload;
+      return {
+        ...state,
+        listTask: data
       };
     }
     default: {
