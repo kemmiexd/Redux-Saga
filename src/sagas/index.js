@@ -33,7 +33,6 @@ function* watchFetchListTaskAction() {
 function* filterTaskSaga({ payload }) {
   yield delay(500);
   const { keyword } = payload;
-  console.log(payload);
   const list = yield select(state => state.task.listTask);
   const filteredTask = list.filter(task => {
     return task.title

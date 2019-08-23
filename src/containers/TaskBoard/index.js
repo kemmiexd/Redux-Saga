@@ -40,10 +40,11 @@ class TaskBoard extends React.Component {
   };
 
   onOpenForm = () => {
-    const { modalActions } = this.props;
-    const { showModal, changeModalContent, changeModalTitle } = modalActions;
+    const { modalActionCreators } = this.props;
+    const { showModal, changeModalContent, changeModalTitle } = modalActionCreators;
     showModal();
     changeModalTitle('Add new now');
+    changeModalContent(<TaskForm modalActionCreators={modalActionCreators} />);
   };
 
   renderBoard = () => {
@@ -117,7 +118,7 @@ class TaskBoard extends React.Component {
         </Button>
         {this.renderSearchBox()}
         {this.renderBoard()}
-        {this.renderForm()}
+        {/* {this.renderForm()} */}
       </div>
     );
   }
@@ -147,7 +148,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     taskActionCreators: bindActionCreators(taskActions, dispatch),
-    modalActions: bindActionCreators(modalActions, dispatch)
+    modalActionCreators: bindActionCreators(modalActions, dispatch)
   };
 };
 
