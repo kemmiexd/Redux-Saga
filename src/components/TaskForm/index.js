@@ -10,6 +10,7 @@ import validate from './validate';
 class TaskForm extends React.Component {
   handleSubmitForm = data => {
     console.log(data);
+    console.log('hello')
   }
 
   render() {
