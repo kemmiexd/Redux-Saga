@@ -12,7 +12,7 @@ import { STATUSES } from "../../constants";
 
 import TaskList from "../../components/TaskList";
 import TaskForm from "../../components/TaskForm";
-import SearchBox from '../../components/SearchBox';
+import SearchBox from "../../components/SearchBox";
 
 class TaskBoard extends React.Component {
   constructor(props) {
@@ -33,19 +33,39 @@ class TaskBoard extends React.Component {
     const { taskActionCreators } = this.props;
     const { fetchListTask } = taskActionCreators;
     fetchListTask();
-  }
+  };
 
   handleClose = () => {
     this.setState({ open: false });
   };
 
   onOpenForm = () => {
-    const { modalActionCreators } = this.props;
-    const { showModal, changeModalContent, changeModalTitle } = modalActionCreators;
+    const { modalActionCreators, taskActionCreators } = this.props;
+    const { setTaskEditing } = taskActionCreators;
+    setTaskEditing(null);
+    const {
+      showModal,
+      changeModalContent,
+      changeModalTitle
+    } = modalActionCreators;
     showModal();
-    changeModalTitle('Add new now');
+    changeModalTitle("Add new now");
     changeModalContent(<TaskForm modalActionCreators={modalActionCreators} />);
   };
+
+  handleEditTask = task => {
+    const { taskActionCreators, modalActionCreators } = this.props;
+    const { setTaskEditing } = taskActionCreators;
+    setTaskEditing(task);
+    const {
+      showModal,
+      changeModalContent,
+      changeModalTitle
+    } = modalActionCreators;
+    showModal();
+    changeModalTitle("Edit Task");
+    changeModalContent(<TaskForm  />);
+  }
 
   renderBoard = () => {
     const { listTask } = this.props;
@@ -59,7 +79,12 @@ class TaskBoard extends React.Component {
           );
 
           return (
-            <TaskList tasks={taskFiltered} status={status} key={status.value} />
+            <TaskList
+              tasks={taskFiltered}
+              status={status}
+              key={status.value}
+              onClickEdit={this.handleEditTask}
+            />
           );
         })}
       </Grid>
@@ -73,14 +98,12 @@ class TaskBoard extends React.Component {
     const { taskActionCreators } = this.props;
     const { filterTask } = taskActionCreators;
     filterTask(value);
-  }
+  };
 
   renderSearchBox() {
     let result = null;
 
-    result = (
-      <SearchBox handleChange={this.handleFilter} />
-    );
+    result = <SearchBox handleChange={this.handleFilter} />;
 
     return result;
   }
@@ -128,14 +151,14 @@ TaskBoard.propTypes = {
   classes: PropTypes.object,
   taskActionCreators: PropTypes.shape({
     fetchListTask: PropTypes.func,
-    filterTask: PropTypes.func,
+    filterTask: PropTypes.func
   }),
   listTask: PropTypes.array,
   modalActions: PropTypes.shape({
     showModal: PropTypes.func,
     hideModal: PropTypes.func,
     changeModalTitle: PropTypes.func,
-    changeModalContent: PropTypes.func,
+    changeModalContent: PropTypes.func
   })
 };
 

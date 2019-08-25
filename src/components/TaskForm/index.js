@@ -1,20 +1,24 @@
 import React from "react";
 import { withStyles } from "@material-ui/styles";
-import { Button, TextField } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { reduxForm, Field } from 'redux-form';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import styles from "./styles";
 import renderTextField from "../FormHelper/TextField";
 import validate from './validate';
+import * as taskActions from '../../actions/task';
 
 class TaskForm extends React.Component {
   handleSubmitForm = data => {
-    console.log(data);
-    console.log('hello')
+    const { taskActionCreators } = this.props;
+    const { addTask } = taskActionCreators;
+    const { title, description } = data;
+    addTask(title, description);
   }
 
   render() {
-    const { classes, handleSubmit, invalid, submiting } = this.props;
+    const { classes, handleSubmit, invalid, submiting, taskEditing } = this.props;
 
     return (
       <form onSubmit={handleSubmit(this.handleSubmitForm)}>
@@ -26,6 +30,7 @@ class TaskForm extends React.Component {
           component={renderTextField}
           margin="normal"
           fullWidth
+          value={taskEditing ? taskEditing.title : ''}
         />
         <Field
           id="description"
@@ -48,7 +53,28 @@ class TaskForm extends React.Component {
   }
 }
 
-const FORM_NAME = 'TASK_MANAGEMENT'
+const mapStateToProps = state => {
+  return {
+    taskEditing: state.task.taskEditing,
+    initialValues: {
+      title: state.task.taskEditing ? state.task.taskEditing.title : null,
+      description: state.task.taskEditing ? state.task.taskEditing.description : null
+    }
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    taskActionCreators: bindActionCreators(taskActions, dispatch)
+  };
+};
+
+const FORM_NAME = 'TASK_MANAGEMENT';
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
 const withReduxForm = reduxForm({
   form: FORM_NAME,
@@ -57,5 +83,6 @@ const withReduxForm = reduxForm({
 
 export default compose(
   withStyles(styles),
+  withConnect,
   withReduxForm
 )(TaskForm);

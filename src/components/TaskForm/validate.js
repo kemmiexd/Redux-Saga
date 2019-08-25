@@ -1,6 +1,6 @@
 const validate = values => {
   const errors = {};
-  const { title, description } = values;
+  const { title } = values;
   if (!title) {
     errors.title = 'Plz input title';
   } else if (title.trim() && title.length < 5) {

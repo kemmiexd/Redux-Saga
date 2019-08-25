@@ -4,11 +4,11 @@ const styles = () => ({
   },
   card: {
     padding: 20,
-    marginBottom: 20
+    marginBottom: 20,
   },
   text: {
     margin: '10px 0'
-  }
+  },
 });
 
 export default styles;
